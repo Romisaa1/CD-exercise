@@ -1,2 +1,2 @@
 [all]
-ec2-52-207-214-40.compute-1.amazonaws.com
+ec2-54-173-160-88.compute-1.amazonaws.com

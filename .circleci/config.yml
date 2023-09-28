@@ -30,7 +30,7 @@ jobs:
 #The new job should:
 
 workflows:
-  my-workflow:
+  my-workflow: 
     jobs:
 #      - create_infrastructure
        - configure_infrastructure

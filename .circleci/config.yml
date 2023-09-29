@@ -1,5 +1,6 @@
 version: 2.1
 jobs:
+
 #   create_infrastructure: 
 #     docker: 
 #       - image: amazon/aws-cli 
@@ -11,26 +12,46 @@ jobs:
 #             aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} --region us-east-1
 
 
- # Exercise: Config and Deployment
-  configure_infrastructure: 
-    docker:
-      - image: python:3.12.0rc3-alpine3.18
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints: ["7a:8b:7c:4d:f7:73:aa:ee:95:ee:b2:f1:dc:ba:d9:ad"] 
-      - run:
-          name: Install Ansible
-          command: |
-            apk add --update ansible
-      - run:
-          name: Run Playbook and Configure server
-          command: |
-            ansible-playbook main.yml -i inventory.txt
-#The new job should:
+# Exercise: Config and Deployment
+  # configure_infrastructure: 
+  #   docker:
+  #     - image: python:3.12.0rc3-alpine3.18
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints: ["7a:8b:7c:4d:f7:73:aa:ee:95:ee:b2:f1:dc:ba:d9:ad"] 
+  #     - run:
+  #         name: Install Ansible
+  #         command: |
+  #           apk add --update ansible
+  #     - run:
+  #         name: Run Playbook and Configure server
+  #         command: |
+  #           ansible-playbook main.yml -i inventory.txt
 
+#The new job should:
+ # Exercise: Smoke Testing
+  smoke_test:
+    docker:
+      - image: alpine:latest
+    steps:
+      - run: apk add --update curl
+      - run:
+          name: smoke test
+          command: |
+            URL="https://blog.udacity.com/"
+            # Test if website exists
+            if curl -s --head ${URL} 
+            then
+              return 0
+            else
+              return 1
+            fi
+
+  
 workflows:
   my-workflow: 
     jobs:
+      - smoke_test
 #      - create_infrastructure
-       - configure_infrastructure
+#      - configure_infrastructure

@@ -15,15 +15,15 @@ commands:
 
 jobs:
 
-  create_infrastructure: 
-    docker: 
-      - image: amazon/aws-cli 
-    steps: 
-      - checkout 
-      - run: 
-          name: Create Cloudformation Stack 
-          command: | 
-            aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} --region us-east-1
+  # create_infrastructure: 
+  #   docker: 
+  #     - image: amazon/aws-cli 
+  #   steps: 
+  #     - checkout 
+  #     - run: 
+  #         name: Create Cloudformation Stack 
+  #         command: | 
+  #           aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} --region us-east-1
 
 
 # Exercise: Config and Deployment
@@ -70,7 +70,8 @@ jobs:
       - run:
           name: Test job
           # Fail the job intentionally to simulate an error.
-          command:  return 1
+          command:  | 
+            return 1
       - destroy_environment  
       
 
@@ -79,9 +80,9 @@ jobs:
 workflows:
   my-workflow: 
     jobs:
-      - create_infrastructure
-      - smoke_test: 
-          requires:  
-            - create_infrastructure      
+      # - create_infrastructure
+      - smoke_test 
+          # requires:  
+          #   - create_infrastructure      
 #      - configure_infrastructure
  
